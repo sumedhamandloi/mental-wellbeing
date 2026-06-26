@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-
+from routes.auth import router as auth_router
+from services import auth
 from database import engine, Base, get_db
 from models import test_models 
 
@@ -9,6 +10,8 @@ from models import test_models
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Mental Well-Being Platform")
+
+app.include_router(auth_router)
 
 @app.get("/")
 def root():
