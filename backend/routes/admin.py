@@ -13,27 +13,162 @@ import os
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
-@router.get("/events", response_model=list[EventOut])
+from models.event import Event, EventReport, EventRSVP
+
+@router.get("/events")
 def get_admin_events(
     db: Session = Depends(get_db),
     current_user = Depends(require_role("admin"))
 ):
+    events = db.query(Event).all()
     
-
-    
-    admin_id = current_user.id
-
-    events = db.query(Event).filter(Event.admin_id == admin_id).all()
-    return events
+    result = []
+    for event in events:
+        templates = db.query(QuizTemplate).filter(QuizTemplate.event_id == event.id).all()
+        total_templates = len(templates)
+        
+        completed_templates = 0
+        if total_templates > 0:
+            template_ids = [t.id for t in templates]
+            completed_templates = db.query(QuizAttempt.quiz_template_id).filter(
+                QuizAttempt.quiz_template_id.in_(template_ids),
+                QuizAttempt.status == "submitted"
+            ).distinct().count()
+            
+        quizzes_count_str = f"{completed_templates}/{total_templates}"
+        attendees_count = db.query(EventRSVP).filter(EventRSVP.event_id == event.id).count()
+        
+        # performance logic based on GWBS average
+        event_gwbs_attempts = db.query(QuizAttempt.total_score).join(
+            QuizTemplate, QuizAttempt.quiz_template_id == QuizTemplate.id
+        ).filter(
+            QuizTemplate.event_id == event.id,
+            QuizTemplate.quiz_type == "GWBS",
+            QuizAttempt.status == "submitted"
+        ).all()
+        
+        perf_str = "N/A"
+        if event_gwbs_attempts:
+            e_scores = [a[0] for a in event_gwbs_attempts if a[0] is not None]
+            if e_scores:
+                e_avg = sum(e_scores) / len(e_scores)
+                if e_avg >= 220:
+                    perf_str = "High"
+                elif e_avg >= 150:
+                    perf_str = "Average"
+                else:
+                    perf_str = "Low"
+                    
+        result.append({
+            "id": str(event.id),
+            "title": event.title,
+            "venue": event.venue,
+            "event_date": event.event_date.isoformat(),
+            "event_time": event.event_time.strftime("%H:%M") if hasattr(event.event_time, 'strftime') else str(event.event_time),
+            "status": event.status,
+            "description": event.description,
+            "quizzes_count": quizzes_count_str,
+            "attendees_count": attendees_count,
+            "performance": perf_str
+        })
+    return result
 
 @router.get("/dashboard")
 def get_admin_dashboard(
     db: Session = Depends(get_db),
     current_user = Depends(require_role("admin"))
 ):
+    # 1. Total events
+    admin_events = db.query(Event).all()
+    event_ids = [e.id for e in admin_events]
+    total_events = len(admin_events)
     
-    # TODO: pending wireframe confirmation
-    return {"message": "Admin dashboard coming soon"}
+    # 2. Total quizzes assigned to these events
+    total_quizzes = 0
+    if event_ids:
+        total_quizzes = db.query(QuizTemplate).filter(QuizTemplate.event_id.in_(event_ids)).count()
+        
+    # 3. Total unique students registered (RSVP'd)
+    total_students = 0
+    if event_ids:
+        total_students = db.query(EventRSVP.student_id).filter(EventRSVP.event_id.in_(event_ids)).distinct().count()
+        
+    # 4. Average GWBS well-being score
+    avg_wellbeing_pct = 0.0
+    if event_ids:
+        gwbs_attempts = db.query(QuizAttempt.total_score).join(
+            QuizTemplate, QuizAttempt.quiz_template_id == QuizTemplate.id
+        ).filter(
+            QuizTemplate.event_id.in_(event_ids),
+            QuizTemplate.quiz_type == "GWBS",
+            QuizAttempt.status == "submitted"
+        ).all()
+        
+        if gwbs_attempts:
+            scores = [a[0] for a in gwbs_attempts if a[0] is not None]
+            if scores:
+                avg_score = sum(scores) / len(scores)
+                avg_wellbeing_pct = round((avg_score / 275.0) * 100, 1)
+                
+    # 5. Events summary for dashboard
+    events_summary = []
+    for event in admin_events:
+        templates = db.query(QuizTemplate).filter(QuizTemplate.event_id == event.id).all()
+        total_templates = len(templates)
+        
+        completed_templates = 0
+        if total_templates > 0:
+            template_ids = [t.id for t in templates]
+            completed_templates = db.query(QuizAttempt.quiz_template_id).filter(
+                QuizAttempt.quiz_template_id.in_(template_ids),
+                QuizAttempt.status == "submitted"
+            ).distinct().count()
+            
+        quizzes_count_str = f"{completed_templates}/{total_templates}"
+        attendees_count = db.query(EventRSVP).filter(EventRSVP.event_id == event.id).count()
+        
+        event_gwbs_attempts = db.query(QuizAttempt.total_score).join(
+            QuizTemplate, QuizAttempt.quiz_template_id == QuizTemplate.id
+        ).filter(
+            QuizTemplate.event_id == event.id,
+            QuizTemplate.quiz_type == "GWBS",
+            QuizAttempt.status == "submitted"
+        ).all()
+        
+        perf_str = "N/A"
+        if event_gwbs_attempts:
+            e_scores = [a[0] for a in event_gwbs_attempts if a[0] is not None]
+            if e_scores:
+                e_avg = sum(e_scores) / len(e_scores)
+                if e_avg >= 220:
+                    perf_str = "High"
+                elif e_avg >= 150:
+                    perf_str = "Average"
+                else:
+                    perf_str = "Low"
+                    
+        events_summary.append({
+            "id": str(event.id),
+            "title": event.title,
+            "quizzes_count": quizzes_count_str,
+            "event_date": event.event_date.isoformat(),
+            "event_time": event.event_time.strftime("%H:%M") if hasattr(event.event_time, 'strftime') else str(event.event_time),
+            "attendees_count": attendees_count,
+            "performance": perf_str,
+            "status": event.status
+        })
+        
+    return {
+        "admin_name": current_user.name,
+        "department": current_user.department,
+        "stats": {
+            "total_events": total_events,
+            "total_quizzes": total_quizzes,
+            "total_students": total_students,
+            "avg_wellbeing": f"{avg_wellbeing_pct}%" if avg_wellbeing_pct > 0 else "N/A"
+        },
+        "events_summary": events_summary
+    }
 
 
 
