@@ -11,7 +11,6 @@ from routes.admin import router as admin_router
 from routes.student import router as student_router
 from routes.superuser import router as superuser_router
 from fastapi.middleware.cors import CORSMiddleware
-from services.scheduling import start_scheduler
 
 Base.metadata.create_all(bind=engine)
 
@@ -23,11 +22,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Mental Well-Being Platform", lifespan=lifespan)
 
-origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+origins=[
+"http://localhost:5173", 
+"http://127.0.0.1:5173",
 ]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -42,16 +40,9 @@ app.include_router(admin_router)
 app.include_router(student_router)
 app.include_router(superuser_router)
 
-
-@app.on_event("startup")
-def on_startup():
-    start_scheduler()
-
-
 @app.get("/")
 def root():
     return {"message": "API is running"}
-
 
 @app.get("/health")
 def health_check(db: Session = Depends(get_db)):
