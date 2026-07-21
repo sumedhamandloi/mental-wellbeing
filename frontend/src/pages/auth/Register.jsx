@@ -1,18 +1,15 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import logo from "../../assets/icons/image.png";
+import logo from "../../assets/icons/logo.png";
 import API from "../../api/axios";
 
 const Register = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -97,7 +94,6 @@ const Register = () => {
       });
 
       alert("Registration Successful");
-
       navigate("/login");
     } catch (err) {
       alert(err.response?.data?.detail || "Registration Failed");
@@ -107,39 +103,31 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#16342F] flex items-center justify-center px-6 py-6">
-      <div className="w-[92vw] max-w-[1650px] h-[92vh] min-h-[950px] bg-white rounded-[35px] shadow-[0_35px_90px_rgba(0,0,0,0.35)] overflow-hidden grid lg:grid-cols-[40%_60%]">
+    <div className="min-h-screen bg-[#16342F] flex items-center justify-center p-4">
+      <div className="w-[92vw] max-w-[980px] h-auto min-h-[550px] my-4 bg-white rounded-2xl shadow-2xl overflow-hidden grid lg:grid-cols-[40%_60%]">
+        
         {/* LEFT PANEL */}
-
         <div className="hidden lg:flex relative overflow-hidden bg-gradient-to-br from-[#0E3B34] via-[#1D5C4F] to-[#3D8B73]">
           {/* Decorative circles */}
+          <div className="absolute -top-20 -left-20 w-52 h-52 rounded-full bg-white/10"></div>
+          <div className="absolute bottom-0 -right-20 w-52 h-52 rounded-full bg-white/10"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-white/5"></div>
 
-          <div className="absolute -top-28 -left-28 w-72 h-72 rounded-full bg-white/10"></div>
+          <div className="relative z-10 flex flex-col justify-center items-center w-full px-8 text-center">
+            <div className="flex items-center justify-center">
+              <div className="bg-white rounded-full p-1.5 shadow-lg">
+                <img
+                  src={logo}
+                  alt="Manomitra Logo"
+                  className="w-28 h-28 object-contain"
+                />
+              </div>
+            </div>
 
-          <div className="absolute bottom-0 -right-28 w-80 h-80 rounded-full bg-white/10"></div>
+            <h1 className="mt-4 text-2xl font-serif font-extrabold text-[#E9F7EF]">ManoMitra</h1>
+            <p className="mt-1 text-xs font-semibold text-green-100">Friend of the Mind</p>
 
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-white/5"></div>
-
-          <div className="relative z-10 flex flex-col justify-center items-center w-full px-16">
-          <div className="flex items-center justify-center">
-
-  <div className="bg-white rounded-full p-2 shadow-[0_8px_30px_rgba(0,0,0,0.25)]">
-
-    <img
-      src={logo}
-      alt="Manomitra Logo"
-      className="w-52 h-52 object-contain"
-    />
-
-  </div>
-
-</div>
-
-           <h1 className="mt-6 text-7xl font-serif font-extrabold text-[#E9F7EF]">ManoMitra</h1>
-
-            <p className="mt-3 text-3xl text-green-100">Friend of the Mind</p>
-
-            <p className="mt-10 text-center text-2xl leading-8 text-green-50 max-w-md">
+            <p className="mt-5 text-center text-[11px] leading-5 text-green-50 max-w-xs">
               A safe space designed for IIPS students to participate in wellness
               events, counselling sessions, workshops and mental health quizzes.
             </p>
@@ -147,34 +135,29 @@ const Register = () => {
         </div>
 
         {/* RIGHT PANEL */}
-
-        <div className="flex flex-col justify-center px-8 py-10 lg:px-16">
-          <div className="lg:hidden flex flex-col items-center mb-8">
-            <div className="w-24 h-24 rounded-full bg-[#D9F99D] flex items-center justify-center">
-              <img src={logo} alt="logo" className="w-14 h-14" />
+        <div className="flex flex-col justify-center px-8 py-8 lg:px-12">
+          <div className="lg:hidden flex flex-col items-center mb-5">
+            <div className="w-14 h-14 rounded-full bg-[#D9F99D] flex items-center justify-center">
+              <img src={logo} alt="logo" className="w-8 h-8 object-contain" />
             </div>
-
-            <h2 className="text-3xl font-bold text-[#1D5C4F] mt-4">
+            <h2 className="text-base font-bold text-[#1D5C4F] mt-1">
               Manomitra
             </h2>
           </div>
 
-          <h2 className="text-xl lg:text-7xl font-bold text-[#194D42]">
+          <h2 className="text-2xl lg:text-3xl font-bold text-[#194D42]">
             Student Registration
           </h2>
 
-          <p className="text-gray-500 mt-8 mb-16 text-3xl">
+          <p className="text-gray-500 mt-1 mb-5 text-xs">
             Create your account to continue.
           </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5"
-          >
-            {" "}
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-x-3.5 gap-y-2.5">
+            
             {/* Full Name */}
             <div className="md:col-span-2">
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Full Name
               </label>
 
@@ -184,16 +167,17 @@ const Register = () => {
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="Enter your full name"
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               />
 
               {errors.name && (
-                <p className="text-red-500 text-xl mt-1">{errors.name}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.name}</p>
               )}
             </div>
+
             {/* Enrollment */}
             <div>
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Enrollment Number
               </label>
 
@@ -203,18 +187,19 @@ const Register = () => {
                 value={formData.enrollment_no}
                 onChange={handleChange}
                 placeholder="Enrollment Number"
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               />
 
               {errors.enrollment_no && (
-                <p className="text-red-500 text-xl mt-1">
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">
                   {errors.enrollment_no}
                 </p>
               )}
             </div>
+
             {/* Phone */}
             <div>
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Phone Number
               </label>
 
@@ -225,16 +210,17 @@ const Register = () => {
                 onChange={handleChange}
                 maxLength={10}
                 placeholder="9876543210"
-                className="w-full px-5 py-4 rounded-2xl text-2xl  border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               />
 
               {errors.phone && (
-                <p className="text-red-500 text-xl mt-1">{errors.phone}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.phone}</p>
               )}
             </div>
+
             {/* Email */}
             <div className="md:col-span-2">
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Email Address
               </label>
 
@@ -244,16 +230,17 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="example@iips.edu.in"
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               />
 
               {errors.email && (
-                <p className="text-red-500 text-xl mt-1">{errors.email}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.email}</p>
               )}
             </div>
+
             {/* Gender */}
             <div>
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Gender
               </label>
 
@@ -261,7 +248,7 @@ const Register = () => {
                 name="gender"
                 value={formData.gender}
                 onChange={handleChange}
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               >
                 <option value="">Select Gender</option>
                 <option>Male</option>
@@ -270,12 +257,13 @@ const Register = () => {
               </select>
 
               {errors.gender && (
-                <p className="text-red-500 text-xl mt-1">{errors.gender}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.gender}</p>
               )}
             </div>
+
             {/* Course */}
             <div>
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Course
               </label>
 
@@ -283,28 +271,24 @@ const Register = () => {
                 name="course"
                 value={formData.course}
                 onChange={handleChange}
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               >
                 <option value="">Select Course</option>
-
                 <option value="M.Tech IT">M.Tech IT</option>
-
                 <option value="M.Tech CSE">M.Tech CSE</option>
-
                 <option value="MBA">MBA</option>
-
                 <option value="MCA">MCA</option>
-
                 <option value="B.Com">B.Com</option>
               </select>
 
               {errors.course && (
-                <p className="text-red-500 text-xl mt-1">{errors.course}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.course}</p>
               )}
             </div>
+
             {/* Semester */}
             <div>
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Semester
               </label>
 
@@ -312,10 +296,9 @@ const Register = () => {
                 name="semester"
                 value={formData.semester}
                 onChange={handleChange}
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               >
                 <option value="">Select Semester</option>
-
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((sem) => (
                   <option key={sem} value={sem}>
                     Semester {sem}
@@ -324,12 +307,13 @@ const Register = () => {
               </select>
 
               {errors.semester && (
-                <p className="text-red-500 text-xl mt-1">{errors.semester}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.semester}</p>
               )}
             </div>
+
             {/* Session */}
             <div>
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Academic Session
               </label>
 
@@ -337,24 +321,22 @@ const Register = () => {
                 name="session"
                 value={formData.session}
                 onChange={handleChange}
-                className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
               >
                 <option value="">Select Session</option>
-
                 <option value="2023-2028">2023-2028</option>
-
                 <option value="2024-2029">2024-2029</option>
-
                 <option value="2025-2030">2025-2030</option>
               </select>
 
               {errors.session && (
-                <p className="text-red-500 text-xl mt-1">{errors.session}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.session}</p>
               )}
             </div>
+
             {/* Password */}
             <div className="md:col-span-2">
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Password
               </label>
 
@@ -365,25 +347,26 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder="Minimum 8 characters"
-                  className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                  className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#2F6F5E]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2F6F5E]"
                 >
-                  {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
 
               {errors.password && (
-                <p className="text-red-500 text-xl mt-1">{errors.password}</p>
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">{errors.password}</p>
               )}
             </div>
+
             {/* Confirm Password */}
             <div className="md:col-span-2">
-              <label className="block text-3xl font-semibold text-gray-700 mb-2">
+              <label className="block text-xs font-semibold text-gray-700 mb-1">
                 Confirm Password
               </label>
 
@@ -394,44 +377,45 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="Re-enter password"
-                  className="w-full px-5 py-4 rounded-2xl text-2xl border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
+                  className="w-full px-3 py-1.5 rounded-lg text-xs border border-gray-300 bg-gray-50 focus:bg-white focus:border-[#2F6F5E] focus:ring-4 focus:ring-[#2F6F5E]/20 outline-none transition"
                 />
 
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-[#2F6F5E]"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#2F6F5E]"
                 >
                   {showConfirmPassword ? (
-                    <EyeOff size={22} />
+                    <EyeOff size={16} />
                   ) : (
-                    <Eye size={22} />
+                    <Eye size={16} />
                   )}
                 </button>
               </div>
 
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-[10px] mt-0.5 font-medium">
                   {errors.confirmPassword}
                 </p>
               )}
             </div>
+
             {/* Register Button */}
             <button
               type="submit"
               disabled={loading}
-              className="md:col-span-2 mt-3 bg-gradient-to-r from-[#1B5E54] via-[#2F7D68] to-[#47A37F] hover:from-[#174E45] hover:via-[#296C5A] hover:to-[#3D9070] text-white py-4 rounded-2xl font-bold text-3xl shadow-xl hover:shadow-2xl transition-all duration-300 disabled:opacity-60"
+              className="md:col-span-2 mt-2 bg-gradient-to-r from-[#1B5E54] via-[#2F7D68] to-[#47A37F] hover:from-[#174E45] hover:via-[#296C5A] hover:to-[#3D9070] text-white py-2 rounded-lg font-bold text-xs shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-60"
             >
               {loading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
 
-          <div className="text-center mt-8">
-            <p className="text-gray-600 text-2xl">Already have an account?</p>
+          <div className="text-center mt-5">
+            <p className="text-gray-600 text-xs font-medium">Already have an account?</p>
 
             <Link
               to="/login"
-              className="inline-block mt-5 text-[#1B5E54] font-bold hover:underline text-2xl"
+              className="inline-block mt-1 text-[#1B5E54] font-bold hover:underline text-xs"
             >
               Login Here
             </Link>
