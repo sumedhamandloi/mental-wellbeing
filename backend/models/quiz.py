@@ -8,7 +8,7 @@ from database import Base
 class OptionSet(Base):
     __tablename__ = "option_sets"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     label = Column(String, nullable=False, unique=True)
     # e.g. "agree_disagree", "apply_scale", "scqs_q1" etc.
     description = Column(Text, nullable=True)
@@ -21,7 +21,7 @@ class OptionSet(Base):
 class QuizOption(Base):
     __tablename__ = "quiz_options"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     option_set_id = Column(String, ForeignKey("option_sets.id"), nullable=False)
     option_text = Column(String, nullable=False)
     score_value = Column(Integer, nullable=False)    # raw score 1-5, no polarity here
@@ -35,7 +35,7 @@ class QuizOption(Base):
 class QuizTemplate(Base):
     __tablename__ = "quiz_templates"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     event_id = Column(String, ForeignKey("events.id"), nullable=False)
     quiz_type = Column(String, nullable=False)
     # quiz_type = 'SCQ' | 'GWBS' | 'TABBPS' | 'EI'
@@ -52,7 +52,7 @@ class QuizTemplate(Base):
 class QuizQuestion(Base):
     __tablename__ = "quiz_questions"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     quiz_template_id = Column(String, ForeignKey("quiz_templates.id"), nullable=False)
     option_set_id = Column(String, ForeignKey("option_sets.id"), nullable=False)
     question_no = Column(Integer, nullable=False)
@@ -74,7 +74,7 @@ class QuizQuestion(Base):
 class QuizAttempt(Base):
     __tablename__ = "quiz_attempts"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     quiz_template_id = Column(String, ForeignKey("quiz_templates.id"), nullable=False)
     student_id = Column(String, ForeignKey("students.id"), nullable=False)
     status = Column(String, nullable=False, default="not_attempted")
@@ -107,7 +107,7 @@ class QuizAttempt(Base):
 class AreaScore(Base):
     __tablename__ = "area_scores"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     attempt_id = Column(String, ForeignKey("quiz_attempts.id"), nullable=False)
     area_code = Column(String, nullable=False)
     # matches area_code on quiz_questions
@@ -122,7 +122,7 @@ class AreaScore(Base):
 class QuizResponse(Base):
     __tablename__ = "quiz_responses"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     attempt_id = Column(String, ForeignKey("quiz_attempts.id"), nullable=False)
     question_id = Column(String, ForeignKey("quiz_questions.id"), nullable=False)
     selected_option_id = Column(String, ForeignKey("quiz_options.id"), nullable=False)

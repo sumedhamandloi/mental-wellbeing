@@ -8,7 +8,7 @@ from database import Base
 class Event(Base):
     __tablename__ = "events"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True,default=lambda: str(uuid.uuid4()))
     admin_id = Column(String, ForeignKey("admins.id"), nullable=False)
     title = Column(String, nullable=False)
     venue = Column(String, nullable=False)
@@ -31,7 +31,7 @@ class Event(Base):
 class EventReport(Base):
     __tablename__ = "event_report"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     event_id = Column(String, ForeignKey("events.id"), nullable=False, unique=True)
     # unique=True enforces one report per event
     report_content = Column(Text, nullable=True)
@@ -45,7 +45,7 @@ class EventReport(Base):
 class EventRSVP(Base):
     __tablename__ = "event_rsvp"
 
-    id = Column(String, primary_key=True, default=uuid.uuid4)
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     event_id = Column(String, ForeignKey("events.id"), nullable=False)
     student_id = Column(String, ForeignKey("students.id"), nullable=False)
     rsvped_at = Column(DateTime(timezone=True), server_default=func.now())
