@@ -17,6 +17,15 @@ import QuizResults from "../pages/admin/QuizResults";
 import AdminProfile from "../pages/admin/AdminProfile";
 import DashboardLayout from "../layouts/DashboardLayout";
 
+// Student Pages
+import StudentLayout from "../layouts/StudentLayout";
+import StudentDashboard from "../pages/student/StudentDashboard";
+import StudentQuizzes from "../pages/student/StudentQuizzes";
+import StudentEvents from "../pages/student/StudentEvents";
+import StudentProfile from "../pages/student/StudentProfile";
+import QuizAttempt from "../pages/student/QuizAttempt";
+import StudentQuizResults from "../pages/student/StudentQuizResults";
+
 const ProtectedRoute = ({ children, allowedRole }) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -64,6 +73,24 @@ const AppRoutes = () => {
 
         <Route path="quizzes/:id/results" element={<QuizResults />} />
         <Route path="profile" element={<AdminProfile />} />
+      </Route>
+
+      {/* Student Protected Routes */}
+      <Route
+        path="/student"
+        element={
+          <ProtectedRoute allowedRole="student">
+            <StudentLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route path="dashboard" element={<StudentDashboard />} />
+        <Route path="quizzes" element={<StudentQuizzes />} />
+        <Route path="quizzes/:id/attempt" element={<QuizAttempt />} />
+        <Route path="quizzes/:id/results" element={<StudentQuizResults />} />
+        <Route path="events" element={<StudentEvents />} />
+        <Route path="profile" element={<StudentProfile />} />
       </Route>
 
       {/* Catch-all Redirect */}
