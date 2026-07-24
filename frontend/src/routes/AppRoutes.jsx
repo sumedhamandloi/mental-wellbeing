@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
+import useIsMobile from "../hooks/useIsMobile";
 
 // Public Pages
 import Landing from "../pages/landing/Landing";
@@ -26,6 +27,30 @@ import StudentProfile from "../pages/student/StudentProfile";
 import QuizAttempt from "../pages/student/QuizAttempt";
 import StudentQuizResults from "../pages/student/StudentQuizResults";
 
+// --- Mobile Pages ---
+// Public Mobile
+import MobileLanding from "../pages/mobile/landing/MobileLanding";
+import MobileLogin from "../pages/mobile/auth/MobileLogin";
+import MobileRegister from "../pages/mobile/auth/MobileRegister";
+import MobileAdminLogin from "../pages/mobile/auth/MobileAdminLogin";
+
+// Admin Mobile
+import MobileDashboard from "../pages/mobile/admin/MobileDashboard";
+import MobileManageEvents from "../pages/mobile/admin/MobileManageEvents";
+import MobileManageQuizzes from "../pages/mobile/admin/MobileManageQuizzes";
+import MobileQuizResults from "../pages/mobile/admin/MobileQuizResults";
+import MobileAdminProfile from "../pages/mobile/admin/MobileAdminProfile";
+import MobileDashboardLayout from "../pages/mobile/layouts/MobileDashboardLayout";
+
+// Student Mobile
+import MobileStudentLayout from "../pages/mobile/layouts/MobileStudentLayout";
+import MobileStudentDashboard from "../pages/mobile/student/MobileStudentDashboard";
+import MobileStudentQuizzes from "../pages/mobile/student/MobileStudentQuizzes";
+import MobileStudentEvents from "../pages/mobile/student/MobileStudentEvents";
+import MobileStudentProfile from "../pages/mobile/student/MobileStudentProfile";
+import MobileQuizAttempt from "../pages/mobile/student/MobileQuizAttempt";
+import MobileStudentQuizResults from "../pages/mobile/student/MobileStudentQuizResults";
+
 const ProtectedRoute = ({ children, allowedRole }) => {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
@@ -44,35 +69,37 @@ const ProtectedRoute = ({ children, allowedRole }) => {
 };
 
 const AppRoutes = () => {
+  const isMobile = useIsMobile();
+
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Landing />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/" element={isMobile ? <MobileLanding /> : <Landing />} />
+      <Route path="/login" element={isMobile ? <MobileLogin /> : <Login />} />
+      <Route path="/register" element={isMobile ? <MobileRegister /> : <Register />} />
 
       {/* Dedicated Admin Login */}
-      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/login" element={isMobile ? <MobileAdminLogin /> : <AdminLogin />} />
 
       {/* Admin Protected Routes */}
       <Route
         path="/admin"
         element={
           <ProtectedRoute allowedRole="admin">
-            <DashboardLayout />
+            {isMobile ? <MobileDashboardLayout /> : <DashboardLayout />}
           </ProtectedRoute>
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="events" element={<ManageEvents />} />
-        <Route path="quizzes" element={<ManageQuizzes />} />
+        <Route path="dashboard" element={isMobile ? <MobileDashboard /> : <Dashboard />} />
+        <Route path="events" element={isMobile ? <MobileManageEvents /> : <ManageEvents />} />
+        <Route path="quizzes" element={isMobile ? <MobileManageQuizzes /> : <ManageQuizzes />} />
 
         {/* Supporting upstream's route for manage-quizzes */}
         <Route path="manage-quizzes" element={<Navigate to="quizzes" replace />} />
 
-        <Route path="quizzes/:id/results" element={<QuizResults />} />
-        <Route path="profile" element={<AdminProfile />} />
+        <Route path="quizzes/:id/results" element={isMobile ? <MobileQuizResults /> : <QuizResults />} />
+        <Route path="profile" element={isMobile ? <MobileAdminProfile /> : <AdminProfile />} />
       </Route>
 
       {/* Student Protected Routes */}
@@ -80,17 +107,17 @@ const AppRoutes = () => {
         path="/student"
         element={
           <ProtectedRoute allowedRole="student">
-            <StudentLayout />
+            {isMobile ? <MobileStudentLayout /> : <StudentLayout />}
           </ProtectedRoute>
         }
       >
         <Route index element={<Navigate to="dashboard" replace />} />
-        <Route path="dashboard" element={<StudentDashboard />} />
-        <Route path="quizzes" element={<StudentQuizzes />} />
-        <Route path="quizzes/:id/attempt" element={<QuizAttempt />} />
-        <Route path="quizzes/:id/results" element={<StudentQuizResults />} />
-        <Route path="events" element={<StudentEvents />} />
-        <Route path="profile" element={<StudentProfile />} />
+        <Route path="dashboard" element={isMobile ? <MobileStudentDashboard /> : <StudentDashboard />} />
+        <Route path="quizzes" element={isMobile ? <MobileStudentQuizzes /> : <StudentQuizzes />} />
+        <Route path="quizzes/:id/attempt" element={isMobile ? <MobileQuizAttempt /> : <QuizAttempt />} />
+        <Route path="quizzes/:id/results" element={isMobile ? <MobileStudentQuizResults /> : <StudentQuizResults />} />
+        <Route path="events" element={isMobile ? <MobileStudentEvents /> : <StudentEvents />} />
+        <Route path="profile" element={isMobile ? <MobileStudentProfile /> : <StudentProfile />} />
       </Route>
 
       {/* Catch-all Redirect */}
