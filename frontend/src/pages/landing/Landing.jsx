@@ -66,7 +66,7 @@ const Landing = () => {
 
         {/* Right Action Buttons */}
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <Link to="/login" className="btn btn-secondary" style={{
+          <Link to="/role-selection" className="btn btn-secondary" style={{
             width: '98px',
             height: '40px',
             boxSizing: 'border-box',
@@ -85,7 +85,7 @@ const Landing = () => {
           }}>
             Login
           </Link>
-          <Link to="/register" className="btn btn-primary" style={{
+          <Link to="/role-selection" className="btn btn-primary" style={{
             width: '136px',
             height: '40px',
             borderRadius: '34px',
@@ -172,7 +172,7 @@ const Landing = () => {
 
             {/* Action Buttons */}
             <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.5rem' }}>
-              <Link to="/register" className="btn btn-primary" style={{
+              <Link to="/role-selection" className="btn btn-primary" style={{
                 width: '160px',
                 height: '40px',
                 borderRadius: '34px',

@@ -6,6 +6,7 @@ import useIsMobile from "../hooks/useIsMobile";
 import Landing from "../pages/landing/Landing";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import RoleSelection from "../pages/auth/RoleSelection";
 
 // Admin Auth
 import AdminLogin from "../pages/auth/AdminLogin";
@@ -32,6 +33,7 @@ import StudentQuizResults from "../pages/student/StudentQuizResults";
 import MobileLanding from "../pages/mobile/landing/MobileLanding";
 import MobileLogin from "../pages/mobile/auth/MobileLogin";
 import MobileRegister from "../pages/mobile/auth/MobileRegister";
+import MobileRoleSelection from "../pages/mobile/auth/MobileRoleSelection";
 import MobileAdminLogin from "../pages/mobile/auth/MobileAdminLogin";
 
 // Admin Mobile
@@ -75,6 +77,7 @@ const AppRoutes = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={isMobile ? <MobileLanding /> : <Landing />} />
+      <Route path="/role-selection" element={isMobile ? <MobileRoleSelection /> : <RoleSelection />} />
       <Route path="/login" element={isMobile ? <MobileLogin /> : <Login />} />
       <Route path="/register" element={isMobile ? <MobileRegister /> : <Register />} />
 

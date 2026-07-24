@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import logo from '../../../assets/icons/logo.png';
 import sparklesImage from '../../../assets/sparkles.png';
 import calmiImage from '../../../assets/Calmi.png';
@@ -9,6 +10,7 @@ import tabbpsIcon from '../../../assets/TABBPS.png';
 import eiIcon from '../../../assets/EI.png';
 
 const MobileLanding = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div style={{
@@ -22,11 +24,11 @@ const MobileLanding = () => {
 
       {/* Header bar / Navbar */}
       <header style={{
-        padding: '1.5rem 2.5rem',
+        padding: '1rem',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        maxWidth: '1363px',
+        maxWidth: '100%',
         margin: '0 auto',
         width: '100%',
         backgroundColor: 'transparent'
@@ -37,8 +39,8 @@ const MobileLanding = () => {
           <span style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 500,
-            fontSize: '30px',
-            lineHeight: '40px',
+            fontSize: '22px',
+            lineHeight: '30px',
             color: '#3E4F45',
             display: 'inline-flex',
             alignItems: 'center'
@@ -55,48 +57,99 @@ const MobileLanding = () => {
           <a href="#message">The Message</a>
         </nav>
 
-        {/* Right Action Buttons */}
-        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <Link to="/login" className="btn btn-secondary" style={{
-            padding: '0.5rem 1rem',
-            borderRadius: '34px',
-            border: '1px solid #5B5B5B',
-            backgroundColor: 'rgba(255, 255, 255, 0.01)',
-            color: '#3E4F45',
-            fontWeight: 700,
-            fontSize: '13px',
-            textDecoration: 'none'
-          }}>
-            Login
-          </Link>
-          <Link to="/register" className="btn btn-primary" style={{
-            padding: '0.5rem 1rem',
-            borderRadius: '34px',
-            backgroundColor: '#FF7F50',
-            color: '#ffffff',
-            fontWeight: 700,
-            fontSize: '13px',
-            display: 'flex',
-            alignItems: 'center',
-            textDecoration: 'none',
-            gap: '0.25rem'
-          }}>
-            <span>Start</span>
-            <ArrowRight size={14} />
-          </Link>
+        {/* Right Action Buttons - Hamburger */}
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            style={{ background: 'none', border: 'none', color: '#3E4F45', cursor: 'pointer', padding: '0.5rem' }}
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div style={{
+          position: 'fixed',
+          top: '72px', // Below header
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: '#ffffff',
+          zIndex: 50,
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '2rem 1.5rem',
+          gap: '2rem',
+          overflowY: 'auto'
+        }}>
+          <nav style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem',
+            fontFamily: "'Raleway', sans-serif",
+            fontWeight: 700,
+            fontSize: '18px',
+            color: '#3E4F45'
+          }}>
+            <a href="#home" onClick={() => setIsMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.75rem' }}>Home</a>
+            <a href="#about" onClick={() => setIsMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.75rem' }}>About</a>
+            <a href="#quizzes" onClick={() => setIsMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.75rem' }}>Quizzes</a>
+            <a href="#message" onClick={() => setIsMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit', borderBottom: '1px solid #f0f0f0', paddingBottom: '0.75rem' }}>The Message</a>
+          </nav>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+            <Link to="/role-selection" onClick={() => setIsMenuOpen(false)} className="btn btn-secondary" style={{
+              width: '100%',
+              padding: '1rem',
+              boxSizing: 'border-box',
+              borderRadius: '34px',
+              border: '1px solid #5B5B5B',
+              backgroundColor: 'transparent',
+              color: '#3E4F45',
+              fontFamily: "'Raleway', sans-serif",
+              fontWeight: 700,
+              fontSize: '16px',
+              textDecoration: 'none',
+              textAlign: 'center'
+            }}>
+              Login
+            </Link>
+            <Link to="/role-selection" onClick={() => setIsMenuOpen(false)} className="btn btn-primary" style={{
+              width: '100%',
+              padding: '1rem',
+              boxSizing: 'border-box',
+              borderRadius: '34px',
+              backgroundColor: '#FF7F50',
+              border: 'none',
+              color: '#ffffff',
+              fontFamily: "'Raleway', sans-serif",
+              fontWeight: 700,
+              fontSize: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textDecoration: 'none',
+              gap: '0.5rem'
+            }}>
+              <span>Get Started</span>
+              <ArrowRight size={18} />
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <main style={{
         flexGrow: 1,
-        maxWidth: '1363px',
+        maxWidth: '100%',
         margin: '0 auto',
         width: '100%',
-        padding: '2.5rem 2.5rem 5rem 2.5rem',
+        padding: '1rem 1rem 3rem 1rem',
         display: 'flex',
         flexDirection: 'column',
-        gap: '6rem'
+        gap: '4rem'
       }}>
 
         {/* Hero Section */}
@@ -112,22 +165,22 @@ const MobileLanding = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'relative' }}>
 
             {/* Sparkles PNG decoration above title */}
-            <div style={{ position: 'absolute', top: '-40px', right: '25%', pointerEvents: 'none' }}>
+            <div style={{ position: 'absolute', top: '-30px', right: '10%', pointerEvents: 'none' }}>
               <img
                 src={sparklesImage}
                 alt="Sparkles decoration"
-                style={{ width: '120px', height: '120px', objectFit: 'contain' }}
+                style={{ width: '80px', height: '80px', objectFit: 'contain' }}
               />
             </div>
 
             {/* Greeting text title block */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
               <h1 style={{
                 fontFamily: "'Playfair Display', serif",
                 fontStyle: 'normal',
                 fontWeight: 500,
-                fontSize: '52px',
-                lineHeight: '69px',
+                fontSize: '36px',
+                lineHeight: '44px',
                 color: '#000000',
                 margin: 0
               }}>
@@ -139,10 +192,10 @@ const MobileLanding = () => {
                 fontFamily: "'Raleway', sans-serif",
                 fontStyle: 'normal',
                 fontWeight: 400,
-                fontSize: '20px',
-                lineHeight: '23px',
+                fontSize: '16px',
+                lineHeight: '22px',
                 color: '#738077',
-                maxWidth: '547px',
+                maxWidth: '100%',
                 margin: 0
               }}>
                 Scientifically validated assessments and intelligent insights to help institution understand, monitor and improve student wellbeing.
@@ -150,10 +203,10 @@ const MobileLanding = () => {
             </div>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '1.25rem', marginTop: '0.5rem' }}>
-              <Link to="/register" className="btn btn-primary" style={{
-                width: '160px',
-                height: '40px',
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+              <Link to="/role-selection" className="btn btn-primary" style={{
+                flex: 1,
+                height: '48px',
                 borderRadius: '34px',
                 backgroundColor: '#FF7F50',
                 border: 'none',
@@ -161,7 +214,6 @@ const MobileLanding = () => {
                 fontFamily: "'Raleway', sans-serif",
                 fontWeight: 700,
                 fontSize: '15px',
-                lineHeight: '18px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -172,8 +224,8 @@ const MobileLanding = () => {
                 <ArrowRight size={18} />
               </Link>
               <a href="#quick-login" className="btn btn-secondary" style={{
-                width: '141px',
-                height: '40px',
+                flex: 1,
+                height: '48px',
                 boxSizing: 'border-box',
                 borderRadius: '34px',
                 border: '1px solid #5B5B5B',
@@ -182,7 +234,6 @@ const MobileLanding = () => {
                 fontFamily: "'Raleway', sans-serif",
                 fontWeight: 700,
                 fontSize: '15px',
-                lineHeight: '18px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -192,18 +243,20 @@ const MobileLanding = () => {
               </a>
             </div>
 
-                        {/* Mascot & Badges Section */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginTop: '2.5rem', flexWrap: 'wrap' }}>
+            {/* Mascot & Badges Section */}
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: '1.5rem', marginTop: '2rem', width: '100%' }}>
               
               {/* Mascot Character */}
-              <img 
-                src={calmiImage} 
-                alt="Calmi Mascot" 
-                style={{ width: '150px', height: '150px', objectFit: 'contain' }} 
-              />
+              <div style={{ flex: '0 0 auto' }}>
+                <img 
+                  src={calmiImage} 
+                  alt="Calmi Mascot" 
+                  style={{ width: '120px', height: '120px', objectFit: 'contain' }} 
+                />
+              </div>
 
-              {/* Badges Row */}
-              <div style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap', alignItems: 'center' }}>
+              {/* Badges Column */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'flex-start' }}>
                 
                 {/* Badge 1: Validated */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -303,10 +356,10 @@ const MobileLanding = () => {
           </div>
 
           {/* Right Column: High Fidelity Floating Preview Card */}
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', width: '100%', overflowX: 'hidden', padding: '1rem 0' }}>
             <div style={{
               width: '100%',
-              maxWidth: '490px',
+              maxWidth: '340px',
               height: '320px',
               backgroundColor: '#ffffff',
               borderRadius: '24px',
@@ -314,16 +367,9 @@ const MobileLanding = () => {
               border: '1px solid rgba(43, 83, 58, 0.08)',
               display: 'flex',
               overflow: 'hidden',
-              transform: 'perspective(1000px) rotateY(-5deg) rotateX(2deg)',
+              transform: 'scale(0.95)',
               transition: 'all 0.4s ease'
-            }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) scale(1.02)';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = 'perspective(1000px) rotateY(-5deg) rotateX(2deg)';
-              }}
-            >
+            }}>
 
               {/* Preview Sidebar */}
               <div style={{
@@ -421,19 +467,19 @@ const MobileLanding = () => {
         </section>
 
         {/* Core Assessments Grid */}
-        <section id="quizzes" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3rem' }}>
+        <section id="quizzes" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2rem' }}>
 
           <h2 style={{
             fontFamily: "'Raleway', sans-serif",
-            fontSize: '30px',
-            lineHeight: '35px',
+            fontSize: '24px',
+            lineHeight: '30px',
             fontWeight: 700,
             color: '#3E4F45',
             textAlign: 'center',
-            maxWidth: '706px',
+            maxWidth: '100%',
             margin: 0
           }}>
-            Multiple Assessments. Complete Wellbeing View.
+            Multiple Assessments.<br />Complete Wellbeing View.
           </h2>
 
           {/* Cards Grid */}
@@ -442,8 +488,10 @@ const MobileLanding = () => {
             {/* 1. SCQ */}
             <div style={{
               boxSizing: 'border-box',
-              width: '267px',
-              height: '284px',
+              width: '100%',
+              maxWidth: '320px',
+              height: 'auto',
+              minHeight: '260px',
               backgroundColor: '#F3FAF6',
               borderRadius: '15px',
               border: '1px solid #73D38F',
@@ -487,8 +535,10 @@ const MobileLanding = () => {
             {/* 2. GWBS */}
             <div style={{
               boxSizing: 'border-box',
-              width: '267px',
-              height: '284px',
+              width: '100%',
+              maxWidth: '320px',
+              height: 'auto',
+              minHeight: '260px',
               backgroundColor: '#F6F9FE',
               borderRadius: '15px',
               border: '1px solid #A0D3FD',
@@ -532,8 +582,10 @@ const MobileLanding = () => {
             {/* 3. TABBPS */}
             <div style={{
               boxSizing: 'border-box',
-              width: '267px',
-              height: '284px',
+              width: '100%',
+              maxWidth: '320px',
+              height: 'auto',
+              minHeight: '260px',
               backgroundColor: '#FDFCFB',
               borderRadius: '15px',
               border: '1px solid #FDB224',
@@ -577,8 +629,10 @@ const MobileLanding = () => {
             {/* 4. EI */}
             <div style={{
               boxSizing: 'border-box',
-              width: '267px',
-              height: '284px',
+              width: '100%',
+              maxWidth: '320px',
+              height: 'auto',
+              minHeight: '260px',
               backgroundColor: '#FCFBFE',
               borderRadius: '15px',
               border: '1px solid #763FED',
@@ -626,7 +680,7 @@ const MobileLanding = () => {
         <section style={{
           backgroundColor: '#FFEDDA',
           borderRadius: '15px',
-          padding: '2rem',
+          padding: '1.5rem',
           display: 'flex',
           flexDirection: 'column',
           gap: '2rem',
