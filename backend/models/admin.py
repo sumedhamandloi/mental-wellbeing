@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, TIMESTAMP
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 from sqlalchemy.orm import relationship
 from database import Base
@@ -12,5 +12,5 @@ class Admin(Base):
     email = Column(String, unique=True, index=True)
     password_hash = Column(String)
     department = Column(String)
-    created_at = Column(TIMESTAMP, default=datetime.utcnow)
+    created_at = Column(TIMESTAMP, default=lambda: datetime.now(timezone.utc))
     events = relationship("Event", back_populates="admin")

@@ -187,7 +187,7 @@ def create_event(
         venue=data.venue,
         event_date=data.event_date,
         event_time=data.event_time,
-        status="upcoming",
+        status="scheduled",
         description=data.description
     )
     db.add(new_event)

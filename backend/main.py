@@ -1,7 +1,9 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from services import auth
+from services.scheduling import start_scheduler
 from database import engine, Base, get_db
 from routes.auth import router as auth_router
 from routes.quiz import router as quiz_router
@@ -12,7 +14,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Mental Well-Being Platform")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler = start_scheduler()
+    yield
+    scheduler.shutdown(wait=False)
+
+app = FastAPI(title="Mental Well-Being Platform", lifespan=lifespan)
 
 origins=[
 "http://localhost:5173", 
